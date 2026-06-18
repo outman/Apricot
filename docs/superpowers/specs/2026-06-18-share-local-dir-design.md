@@ -45,13 +45,13 @@ ShareLocalDir/
 ## 4. HTTP Server 设计（方案 A：原生 SwiftNIO）
 
 - 管道：`NIOPosix.ServerBootstrap` + `NIOHTTPServerProtocolHandler`（HTTP/1.1）+ 自定义 `HTTPFileHandler`（`ChannelInboundHandler`）。
-- 需要 import：`NIOCore`、`NIOPosix`、`NIOHTTP1`（由 `SwiftNIO` umbrella 产品提供）。
+- 需要 import：`NIOCore`、`NIOPosix`、`NIOHTTP1`（`NIOCore`/`NIOPosix` 由 `NIO` 产品提供并 re-export；`NIOHTTP1` 需单独链接该产品）。
 
 ### 路由与响应
 
-- `GET /` → 共享根目录索引。
-- `GET /<子路径>` → 子目录索引 或 文件下载。
-- 目录：HTML 列表（名称、大小、修改时间；「上级目录」链接；点击进入子目录或下载文件）。
+- `GET /` → 共享根目录。
+- `GET /<子路径>` → 子目录 或 文件下载。
+- 目录：若目录内存在默认文档（`index.html`、`index.htm`，按序），**直接返回该文件**（便于托管静态站点）；否则返回 HTML 列表（名称、大小、修改时间；「上级目录」链接；点击进入子目录或下载文件）。
 - 文件：流式传输（`NonBlockingFileIO` + `FileRegion`）；`Content-Type` 由 `MimeTypeMap` 给；支持 `Range`（返回 `206 Partial Content`，便于大文件/移动端/续传）。无 Range 时返回 `200 OK` 全量。
 - 其他 method → `405 Method Not Allowed`。
 - 找不到 → `404 Not Found`。

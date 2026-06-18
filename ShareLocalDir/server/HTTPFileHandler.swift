@@ -7,6 +7,9 @@ nonisolated final class HTTPFileHandler: ChannelInboundHandler, @unchecked Senda
     typealias InboundIn = HTTPServerRequestPart
     typealias OutboundOut = HTTPServerResponsePart
 
+    /// Filenames served automatically when a directory is requested (directory index documents).
+    static let indexDocuments = ["index.html", "index.htm"]
+
     private let rootURL: URL
     private let fileIO: NonBlockingFileIO
     private var pendingHead: HTTPRequestHead?
@@ -52,11 +55,26 @@ nonisolated final class HTTPFileHandler: ChannelInboundHandler, @unchecked Senda
             var isDir: ObjCBool = false
             FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir)
             if isDir.boolValue {
-                serveDirectory(context: context, head: head, url: url)
+                if let indexURL = indexDocumentURL(in: url) {
+                    serveFile(context: context, head: head, url: indexURL)
+                } else {
+                    serveDirectory(context: context, head: head, url: url)
+                }
             } else {
                 serveFile(context: context, head: head, url: url)
             }
         }
+    }
+
+    /// Returns the first index document (`index.html`, `index.htm`) present in `directory`, if any.
+    private func indexDocumentURL(in directory: URL) -> URL? {
+        for name in Self.indexDocuments {
+            let candidate = directory.appendingPathComponent(name)
+            if FileManager.default.fileExists(atPath: candidate.path) {
+                return candidate
+            }
+        }
+        return nil
     }
 
     // MARK: Directory listing
@@ -126,16 +144,18 @@ nonisolated final class HTTPFileHandler: ChannelInboundHandler, @unchecked Senda
 
         fileIO.openFile(path: url.path, eventLoop: eventLoop)
             .flatMap { (handle, _) -> EventLoopFuture<Void> in
-                context.write(owner.wrapOutboundOut(.head(responseHead))).flatMap { _ -> EventLoopFuture<Void> in
-                    fileIO.readChunked(
-                        fileHandle: handle,
-                        fromOffset: start,
-                        byteCount: length,
-                        allocator: allocator,
-                        eventLoop: eventLoop
-                    ) { chunk -> EventLoopFuture<Void> in
-                        context.writeAndFlush(owner.wrapOutboundOut(.body(.byteBuffer(chunk))))
-                    }
+                // Write the head fire-and-forget; do NOT await its future before reading,
+                // because that future only completes on flush, and the flush happens here
+                // inside readChunked's chunk handler — awaiting it first deadlocks.
+                context.write(owner.wrapOutboundOut(.head(responseHead)), promise: nil)
+                return fileIO.readChunked(
+                    fileHandle: handle,
+                    fromOffset: start,
+                    byteCount: length,
+                    allocator: allocator,
+                    eventLoop: eventLoop
+                ) { chunk -> EventLoopFuture<Void> in
+                    context.writeAndFlush(owner.wrapOutboundOut(.body(.byteBuffer(chunk))))
                 }.flatMap { _ -> EventLoopFuture<Void> in
                     context.writeAndFlush(owner.wrapOutboundOut(.end(nil)))
                 }.always { _ in
