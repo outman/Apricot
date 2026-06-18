@@ -6,11 +6,11 @@
 
 **Architecture:** `@Observable @MainActor AppState` is the single UI state source and owns a `nonisolated FileShareServer` wrapping a SwiftNIO `ServerBootstrap`. A `ChannelInboundHandler` (`HTTPFileHandler`) routes GETs to directory listings or streamed file downloads. All server-side logic is `nonisolated` (opts out of the project's default `MainActor` isolation so it can run on NIO's event loop); pure helpers (`MimeTypeMap`, `PathResolver`, `RangeParser`, `DirectoryIndex`, `LocalNetwork`) are stateless enums/structs with unit tests.
 
-**Tech Stack:** Swift 5/6 (Xcode 26), SwiftUI, AppKit (`NSStatusItem`/`NSOpenPanel`), SwiftNIO 2.101+ (`NIOCore`/`NIOPosix`/`NIOHTTP1` via the `SwiftNIO` umbrella product), CoreImage (QR), App Sandbox + Hardened Runtime.
+**Tech Stack:** Swift 5/6 (Xcode 26), SwiftUI, AppKit (`NSStatusItem`/`NSOpenPanel`), SwiftNIO 2.101+ (`NIOCore`/`NIOPosix`/`NIOHTTP1` via the **`NIO`** umbrella product — note: the product is named `NIO`, not `SwiftNIO`), CoreImage (QR), App Sandbox + Hardened Runtime.
 
 **Key constraints (from spec):**
 - App Sandbox is ON. Binding a listen port requires `com.apple.security.network.server`. Reading a user-selected dir tree requires `files.user-selected.read-only`. Persisting it requires `files.bookmarks.app-sandbox`.
-- SwiftNIO is referenced but **not linked** (`packageProductDependencies` empty) → must add a product dependency or `import` fails.
+- SwiftNIO is referenced but **not linked** (`packageProductDependencies` empty) → must add a product dependency (the umbrella product is named `NIO`) or `import` fails.
 - `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor` → every type touched by NIO MUST be declared `nonisolated` (type-level `nonisolated` parses fine in this toolchain, verified).
 - Deployment target is macOS 14.6 (`@Observable`, `URL.components`, `.buttonStyle(.borderedProminent)` all available).
 
@@ -20,7 +20,7 @@
 
 ## Task 1: Link the SwiftNIO product to the app target
 
-The package is referenced but the product isn't linked, so nothing can `import NIOCore` yet.
+The package is referenced but the product isn't linked, so nothing can `import NIOCore` yet. The umbrella product is named **`NIO`** (not `SwiftNIO`).
 
 **Files:**
 - Modify: `ShareLocalDir.xcodeproj/project.pbxproj`
@@ -39,10 +39,10 @@ with:
 ```
 /* End XCRemoteSwiftPackageReference section */
 /* Begin XCSwiftPackageProductDependency section */
-		5C6EABCE2FE3DC8F00C9FF45 /* SwiftNIO */ = {
+		5C6EABCE2FE3DC8F00C9FF45 /* NIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5C6EABCC2FE3DC8E00C9FF45 /* XCRemoteSwiftPackageReference "swift-nio" */;
-			productName = SwiftNIO;
+			productName = NIO;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
@@ -64,7 +64,7 @@ with:
 ```
 			name = ShareLocalDir;
 			packageProductDependencies = (
-				5C6EABCE2FE3DC8F00C9FF45 /* SwiftNIO */,
+				5C6EABCE2FE3DC8F00C9FF45 /* NIO */,
 			);
 			productName = ShareLocalDir;
 ```
@@ -75,7 +75,7 @@ Run:
 ```bash
 xcodebuild -scheme ShareLocalDir -configuration Debug build 2>&1 | tail -25
 ```
-Expected: `** BUILD SUCCEEDED **` (the template still compiles; the product is now linked and resolvable). If you see `package product dependencies … not found`, re-check the IDs match the existing `XCRemoteSwiftPackageReference` id `5C6EABCC2FE3DC8E00C9FF45`.
+Expected: `** BUILD SUCCEEDED **` (the template still compiles; the product is now linked and resolvable). If you see `Missing package product`, the product name is `NIO` — confirm `productName = NIO;`.
 
 - [ ] **Step 4: Commit**
 

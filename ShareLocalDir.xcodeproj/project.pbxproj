@@ -65,6 +65,7 @@
 			);
 			name = ShareLocalDir;
 			packageProductDependencies = (
+				5C6EABCE2FE3DC8F00C9FF45 /* NIO */,
 			);
 			productName = ShareLocalDir;
 			productReference = 5C6EABBE2FE3D9D600C9FF45 /* ShareLocalDir.app */;
@@ -94,6 +95,9 @@
 			);
 			mainGroup = 5C6EABB52FE3D9D500C9FF45;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5C6EABCC2FE3DC8E00C9FF45 /* XCRemoteSwiftPackageReference "swift-nio" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5C6EABBF2FE3D9D600C9FF45 /* Products */;
 			projectDirPath = "";
@@ -259,11 +263,13 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ShareLocalDir;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cn.basecrypto.ShareLocalDir;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -291,11 +297,13 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ShareLocalDir;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cn.basecrypto.ShareLocalDir;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -331,6 +339,24 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5C6EABCC2FE3DC8E00C9FF45 /* XCRemoteSwiftPackageReference "swift-nio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-nio.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.101.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+/* Begin XCSwiftPackageProductDependency section */
+		5C6EABCE2FE3DC8F00C9FF45 /* NIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5C6EABCC2FE3DC8E00C9FF45 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIO;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5C6EABB62FE3D9D500C9FF45 /* Project object */;
 }
