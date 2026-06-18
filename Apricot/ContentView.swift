@@ -6,101 +6,85 @@ struct ContentView: View {
     @State private var copied = false
 
     var body: some View {
-        ZStack {
-            Color(nsColor: .windowBackgroundColor)
-            card
-                .padding(.top, 32)      // clear the floating traffic-light buttons
-                .padding(.bottom, 24)
-                .padding(.horizontal, 24)
-        }
-        .frame(minWidth: 460, idealWidth: 480, minHeight: 420, idealHeight: 460)
-    }
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 14) {
+                brand
 
-    // MARK: Card
+                folderRow
 
-    private var card: some View {
-        VStack(spacing: 18) {
-            brand
+                statusRow
 
-            folderRow
-
-            if appState.isRunning, let url = appState.serverURL {
                 Divider()
-                statusRow
-                urlRow(url: url)
-                qrView(url: url)
-            } else {
-                statusRow
-            }
 
-            if let message = appState.errorMessage {
-                Text(message)
-                    .font(.callout)
-                    .foregroundStyle(.red)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                if appState.isRunning, let url = appState.serverURL {
+                    urlRow(url: url)
+                    qrView(url: url)
+                } else {
+                    skeleton
+                }
+
+                if let message = appState.errorMessage {
+                    Text(message)
+                        .font(.callout)
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 30)
+            .padding(.horizontal, 24)
+
+            Spacer(minLength: 0)
 
             actionButton
+                .padding(.horizontal, 24)
+                .padding(.bottom, 20)
         }
-        .padding(24)
-        .frame(maxWidth: 440)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(.regularMaterial)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .strokeBorder(.quaternary, lineWidth: 1)
-        )
-        .shadow(color: .black.opacity(0.10), radius: 14, x: 0, y: 6)
+        .frame(width: 400, height: 440)
+        .background(Color(nsColor: .windowBackgroundColor))
     }
 
     // MARK: Sections
 
     private var brand: some View {
-        VStack(spacing: 6) {
-            ZStack {
-                Circle()
-                    .fill(.tint.opacity(0.18))
-                    .frame(width: 40, height: 40)
-                Image(systemName: "dot.radiowaves.left.and.right")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(.tint)
+        HStack(spacing: 12) {
+            Image("logo")
+                .resizable()
+                .interpolation(.high)
+                .frame(width: 44, height: 44)
+            VStack(alignment: .leading, spacing: 1) {
+                Text("Apricot")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                Text("Share folders on your LAN")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
-            Text("Apricot")
-                .font(.title2)
-                .fontWeight(.semibold)
-            Text("局域网文件分享")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+            Spacer()
         }
-        .padding(.top, 2)
     }
 
     private var folderRow: some View {
         HStack(spacing: 10) {
             Image(systemName: "folder")
                 .foregroundStyle(.secondary)
-            Text(appState.selectedFolderURL?.path ?? "未选择目录")
+            Text(appState.selectedFolderURL == nil
+                 ? "No folder selected"
+                 : appState.selectedFolderURL!.path)
                 .lineLimit(1)
                 .truncationMode(.middle)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            Button("选择…") { chooseFolder() }
+                .foregroundStyle(appState.selectedFolderURL == nil ? Color.secondary : .primary)
+            Spacer(minLength: 8)
+            Button("Choose…") { chooseFolder() }
                 .disabled(appState.isRunning)
         }
-        .padding(10)
-        .background(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(.quaternary.opacity(0.5))
-        )
     }
 
     private var statusRow: some View {
         HStack(spacing: 8) {
             Circle()
                 .fill(appState.isRunning ? Color.green : Color.secondary)
-                .frame(width: 9, height: 9)
+                .frame(width: 8, height: 8)
             Text(appState.statusText)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
@@ -109,42 +93,88 @@ struct ContentView: View {
     }
 
     private func urlRow(url: URL) -> some View {
-        VStack(spacing: 10) {
+        VStack(alignment: .leading, spacing: 12) {
             Text(url.absoluteString)
                 .font(.system(.subheadline, design: .monospaced))
                 .textSelection(.enabled)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
             HStack(spacing: 10) {
                 Button {
                     copy(url)
                 } label: {
-                    Label(copied ? "已复制" : "复制", systemImage: copied ? "checkmark" : "doc.on.doc")
+                    HStack(spacing: 5) {
+                        Image(systemName: copied ? "checkmark" : "doc.on.doc")
+                            .font(.system(size: 13))
+                        Text(copied ? "Copied" : "Copy")
+                            .lineLimit(1)
+                    }
+                    .frame(width: 96, height: 18)
                 }
+                .buttonStyle(.bordered)
+                .controlSize(.regular)
+
                 Button {
                     NSWorkspace.shared.open(url)
                 } label: {
-                    Label("在浏览器打开", systemImage: "safari")
+                    HStack(spacing: 5) {
+                        Image(systemName: "safari")
+                            .font(.system(size: 13))
+                        Text("Open in Browser")
+                            .lineLimit(1)
+                    }
+                    .frame(width: 150, height: 18)
                 }
+                .buttonStyle(.bordered)
+                .controlSize(.regular)
+
+                Spacer()
             }
-            .buttonStyle(.bordered)
-            .controlSize(.small)
+        }
+    }
+
+    /// Placeholder shown while idle, mirroring the running layout so the window is stable.
+    private var skeleton: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                .fill(.quaternary)
+                .frame(height: 14)
+                .frame(maxWidth: .infinity)
+            HStack(spacing: 10) {
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(.quaternary)
+                    .frame(width: 90, height: 24)
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(.quaternary)
+                    .frame(width: 130, height: 24)
+            }
+            HStack {
+                Spacer()
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(.quaternary)
+                    .frame(width: 104, height: 104)
+                Spacer()
+            }
         }
     }
 
     @ViewBuilder
     private func qrView(url: URL) -> some View {
         if let qr = QRCodeImage.make(from: url.absoluteString) {
-            Image(nsImage: qr)
-                .resizable()
-                .interpolation(.none)
-                .frame(width: 128, height: 128)
-                .padding(8)
-                .background(
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(Color.white)
-                )
-                .accessibilityLabel("访问地址二维码")
+            HStack {
+                Spacer()
+                Image(nsImage: qr)
+                    .resizable()
+                    .interpolation(.none)
+                    .frame(width: 104, height: 104)
+                    .padding(6)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(Color.white)
+                    )
+                Spacer()
+            }
+            .accessibilityLabel("Address QR code")
         }
     }
 
@@ -154,7 +184,7 @@ struct ContentView: View {
                 if appState.isRunning { await appState.stop() } else { await appState.start() }
             }
         } label: {
-            Text(appState.isRunning ? "停止分享" : "开始分享")
+            Text(appState.isRunning ? "Stop Sharing" : "Start Sharing")
                 .frame(maxWidth: .infinity)
         }
         .controlSize(.large)
@@ -169,7 +199,7 @@ struct ContentView: View {
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = false
-        panel.prompt = "分享"
+        panel.prompt = String(localized: "Share")
         guard panel.runModal() == .OK, let url = panel.url else { return }
         appState.chooseFolder(url)
     }

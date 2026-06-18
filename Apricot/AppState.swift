@@ -6,7 +6,7 @@ final class AppState {
     var selectedFolderURL: URL?
     var isRunning: Bool = false
     var serverURL: URL?
-    var statusText: String = "未运行"
+    var statusText: String = String(localized: "Not running")
     var errorMessage: String?
 
     private let server = FileShareServer()
@@ -31,18 +31,18 @@ final class AppState {
     func start() async {
         guard !isRunning else { return }
         guard let folder = selectedFolderURL else {
-            errorMessage = "请先选择一个要分享的目录。"
+            errorMessage = String(localized: "Please choose a folder to share first.")
             return
         }
         errorMessage = nil
-        statusText = "启动中…"
+        statusText = String(localized: "Starting…")
 
         let acquired = folder.startAccessingSecurityScopedResource()
         do {
             try await server.start(rootURL: folder, preferredPort: FileShareServer.defaultPort)
             let ip = LocalNetwork.bestIPv4(from: LocalNetwork.ipv4Addresses()) ?? "127.0.0.1"
             if ip == "127.0.0.1" {
-                errorMessage = "未检测到局域网 IPv4 地址，将使用 127.0.0.1（仅本机可访问）。"
+                errorMessage = String(localized: "No LAN IPv4 address found; using 127.0.0.1 (this machine only).")
             }
             var components = URLComponents()
             components.scheme = "http"
@@ -51,12 +51,12 @@ final class AppState {
             serverURL = components.url
             scopedFolder = acquired ? folder : nil
             isRunning = true
-            statusText = "运行中 · 端口 \(server.boundPort)"
+            statusText = String(localized: "Running · port \(server.boundPort)")
         } catch {
             if acquired { folder.stopAccessingSecurityScopedResource() }
             scopedFolder = nil
             errorMessage = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
-            statusText = "未运行"
+            statusText = String(localized: "Not running")
             isRunning = false
         }
     }
@@ -65,7 +65,7 @@ final class AppState {
         await server.stop()
         isRunning = false
         serverURL = nil
-        statusText = "未运行"
+        statusText = String(localized: "Not running")
         if let folder = scopedFolder {
             folder.stopAccessingSecurityScopedResource()
             scopedFolder = nil

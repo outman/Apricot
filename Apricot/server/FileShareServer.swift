@@ -10,9 +10,9 @@ enum FileShareError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .noPortAvailable(let first, let n):
-            return "端口 \(first)–\(first + n - 1) 均被占用，未能启动服务器。"
+            return String(localized: "Ports \(first)-\(first + n - 1) are all in use; could not start the server.")
         case .alreadyRunning:
-            return "服务器已在运行。"
+            return String(localized: "The server is already running.")
         }
     }
 }
