@@ -370,10 +370,12 @@ with:
 			);
 			productName = ShareLocalDirTests;
 			productReference = 5C6EABCF2FE3DC9000C9FF45 /* ShareLocalDirTests.xctest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 ```
+
+> **Important:** the product type **must** be `com.apple.product-type.bundle.unit-test` (not the plain `.bundle`). Xcode keys the XCTest Swift overlay / test-target handling off this product type; a plain `.bundle` makes `import XCTest` resolve to the Clang headers (`XCTAssertEqual` comes through as an unavailable C macro).
 
 - [ ] **Step 6: Add the test group + product to the main group and Products group**
 
@@ -455,6 +457,10 @@ with:
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+				);
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3R9FCEYZB4;
@@ -477,6 +483,10 @@ with:
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+				);
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3R9FCEYZB4;
@@ -521,7 +531,105 @@ with:
 /* End XCConfigurationList section */
 ```
 
-- [ ] **Step 10: Add a dummy passing test so the target compiles**
+- [ ] **Step 10: Create a shared scheme with a Test action**
+
+The project ships with no `.xcscheme` files, so `xcodebuild` uses auto-generated implicit schemes whose Test action is empty (`Scheme … is not currently configured for the test action`). Create a shared scheme that lists the test bundle in its Test action.
+
+Create `ShareLocalDir.xcodeproj/xcshareddata/xcschemes/ShareLocalDir.xcscheme`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "2650"
+   version = "1.7">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5C6EABBD2FE3D9D600C9FF45"
+               BuildableName = "ShareLocalDir.app"
+               BlueprintName = "ShareLocalDir"
+               ReferencedContainer = "container:ShareLocalDir.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
+      <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5C6EABD62FE3DC9700C9FF45"
+               BuildableName = "ShareLocalDirTests.xctest"
+               BlueprintName = "ShareLocalDirTests"
+               ReferencedContainer = "container:ShareLocalDir.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "5C6EABBD2FE3D9D600C9FF45"
+            BuildableName = "ShareLocalDir.app"
+            BlueprintName = "ShareLocalDir"
+            ReferencedContainer = "container:ShareLocalDir.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "5C6EABBD2FE3D9D600C9FF45"
+            BuildableName = "ShareLocalDir.app"
+            BlueprintName = "ShareLocalDir"
+            ReferencedContainer = "container:ShareLocalDir.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>
+```
+
+- [ ] **Step 11: Add a dummy passing test so the target compiles**
 
 Create `ShareLocalDirTests/ShareLocalDirTests.swift`:
 
@@ -536,20 +644,18 @@ final class ShareLocalDirTests: XCTestCase {
 }
 ```
 
-- [ ] **Step 11: Verify the test target builds and runs**
+- [ ] **Step 12: Verify the test target builds and runs**
 
 Run:
 ```bash
-xcodebuild test -scheme ShareLocalDir -destination 'platform=macOS' -only-testing:ShareLocalDirTests 2>&1 | tail -40
+xcodebuild test -scheme ShareLocalDir -destination 'platform=macOS' 2>&1 | tail -40
 ```
-Expected: `** TEST SUCCEEDED **` with `ShareLocalDirTests/testSanity` passing.
+Expected: `** TEST SUCCEEDED **` with `ShareLocalDirTests/testSanity` passing. (The shared scheme's Test action runs `ShareLocalDirTests`.)
 
-Fallback if the command reports it cannot find a scheme/test: run `xcodebuild -list` to see available schemes; the implicit `ShareLocalDir` scheme should now include the test target. If `-only-testing` is rejected, drop it: `xcodebuild test -scheme ShareLocalDir -destination 'platform=macOS'`. If the test target's scheme is not visible headlessly, open the project in Xcode once (it auto-registers the scheme) or mark the `ShareLocalDirTests` scheme shared via **Product → Scheme → Manage Schemes**.
-
-- [ ] **Step 12: Commit**
+- [ ] **Step 13: Commit**
 
 ```bash
-git add ShareLocalDir.xcodeproj/project.pbxproj ShareLocalDirTests/ShareLocalDirTests.swift
+git add ShareLocalDir.xcodeproj/project.pbxproj ShareLocalDir.xcodeproj/xcshareddata/xcschemes/ShareLocalDir.xcscheme ShareLocalDirTests/ShareLocalDirTests.swift
 git commit -m "build: add ShareLocalDirTests unit test target"
 ```
 
