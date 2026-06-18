@@ -51,7 +51,6 @@ nonisolated final class FileShareServer: @unchecked Sendable {
         let normalizedRoot = rootURL.standardizedFileURL.resolvingSymlinksInPath()
         let bootstrap = makeBootstrap(rootURL: normalizedRoot)
 
-        var lastError: Error?
         for attempt in 0..<maxAttempts {
             let port = preferredPort + attempt
             do {
@@ -61,7 +60,7 @@ nonisolated final class FileShareServer: @unchecked Sendable {
                 self.boundPort = port
                 return
             } catch {
-                lastError = error
+                // port in use (or transient bind error) — try the next port
             }
         }
         throw FileShareError.noPortAvailable(first: preferredPort, attempted: maxAttempts)

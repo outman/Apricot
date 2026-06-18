@@ -18,11 +18,15 @@ final class StatusItemController: NSObject {
         item.menu = menu
         refreshIcon()
 
-        let timer = Timer(timeInterval: 1.0, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.refreshIcon() }
-        }
+        // Target-action timer (no @Sendable closure) so we don't capture a non-Sendable
+        // `self` across a concurrency boundary. The controller lives for the app lifetime.
+        let timer = Timer(timeInterval: 1.0, target: self, selector: #selector(tick), userInfo: nil, repeats: true)
         RunLoop.main.add(timer, forMode: .common)
         iconTimer = timer
+    }
+
+    @objc private func tick() {
+        refreshIcon()
     }
 
     deinit {
