@@ -1884,7 +1884,7 @@ extension StatusItemController: NSMenuDelegate {
 
     @objc private func showMainWindow() {
         NSApp.activate(ignoringOtherApps: true)
-        for window in NSApp.windows where window.isWindowSelectable {
+        for window in NSApp.windows where window.isVisible && !(window is NSPanel) {
             window.makeKeyAndOrderFront(nil)
         }
     }
