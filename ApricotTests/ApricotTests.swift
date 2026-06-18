@@ -1,7 +1,7 @@
 import XCTest
-@testable import ShareLocalDir
+@testable import Apricot
 
-final class ShareLocalDirTests: XCTestCase {
+final class ApricotTests: XCTestCase {
     func testSanity() {
         XCTAssertEqual(1 + 1, 2)
     }

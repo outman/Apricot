@@ -36,7 +36,7 @@ final class StatusItemController: NSObject {
     @MainActor
     private func refreshIcon() {
         statusItem?.button?.title = appState.isRunning ? "●" : "○"
-        statusItem?.button?.toolTip = "ShareLocalDir · \(appState.statusText)"
+        statusItem?.button?.toolTip = "Apricot · \(appState.statusText)"
     }
 }
 
@@ -44,7 +44,7 @@ extension StatusItemController: NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
 
-        let header = menu.addItem(withTitle: "ShareLocalDir", action: nil, keyEquivalent: "")
+        let header = menu.addItem(withTitle: "Apricot", action: nil, keyEquivalent: "")
         header.isEnabled = false
 
         if let url = appState.serverURL {
@@ -60,7 +60,7 @@ extension StatusItemController: NSMenuDelegate {
         menu.addItem(withTitle: toggleTitle, action: #selector(toggleRunning), keyEquivalent: "").target = self
         menu.addItem(withTitle: "显示主窗口", action: #selector(showMainWindow), keyEquivalent: "").target = self
         menu.addItem(.separator())
-        menu.addItem(withTitle: "退出 ShareLocalDir", action: #selector(quit), keyEquivalent: "q").target = self
+        menu.addItem(withTitle: "退出 Apricot", action: #selector(quit), keyEquivalent: "q").target = self
     }
 
     @objc private func copyAddress() {

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5C6EABBD2FE3D9D600C9FF45"
-               BuildableName = "ShareLocalDir.app"
-               BlueprintName = "ShareLocalDir"
-               ReferencedContainer = "container:ShareLocalDir.xcodeproj">
+               BuildableName = "Apricot.app"
+               BlueprintName = "Apricot"
+               ReferencedContainer = "container:Apricot.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,9 +34,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5C6EABD62FE3DC9700C9FF45"
-               BuildableName = "ShareLocalDirTests.xctest"
-               BlueprintName = "ShareLocalDirTests"
-               ReferencedContainer = "container:ShareLocalDir.xcodeproj">
+               BuildableName = "ApricotTests.xctest"
+               BlueprintName = "ApricotTests"
+               ReferencedContainer = "container:Apricot.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5C6EABBD2FE3D9D600C9FF45"
-            BuildableName = "ShareLocalDir.app"
-            BlueprintName = "ShareLocalDir"
-            ReferencedContainer = "container:ShareLocalDir.xcodeproj">
+            BuildableName = "Apricot.app"
+            BlueprintName = "Apricot"
+            ReferencedContainer = "container:Apricot.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -73,9 +73,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5C6EABBD2FE3D9D600C9FF45"
-            BuildableName = "ShareLocalDir.app"
-            BlueprintName = "ShareLocalDir"
-            ReferencedContainer = "container:ShareLocalDir.xcodeproj">
+            BuildableName = "Apricot.app"
+            BlueprintName = "Apricot"
+            ReferencedContainer = "container:Apricot.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

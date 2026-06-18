@@ -17,24 +17,24 @@
 			containerPortal = 5C6EABB62FE3D9D500C9FF45 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 5C6EABBD2FE3D9D600C9FF45;
-			remoteInfo = ShareLocalDir;
+			remoteInfo = Apricot;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5C6EABBE2FE3D9D600C9FF45 /* ShareLocalDir.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShareLocalDir.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5C6EABCF2FE3DC9000C9FF45 /* ShareLocalDirTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShareLocalDirTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C6EABBE2FE3D9D600C9FF45 /* Apricot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Apricot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C6EABCF2FE3DC9000C9FF45 /* ApricotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApricotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5C6EABC02FE3D9D600C9FF45 /* ShareLocalDir */ = {
+		5C6EABC02FE3D9D600C9FF45 /* Apricot */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ShareLocalDir;
+			path = Apricot;
 			sourceTree = "<group>";
 		};
-		5C6EABD02FE3DC9100C9FF45 /* ShareLocalDirTests */ = {
+		5C6EABD02FE3DC9100C9FF45 /* ApricotTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ShareLocalDirTests;
+			path = ApricotTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -62,8 +62,8 @@
 		5C6EABB52FE3D9D500C9FF45 = {
 			isa = PBXGroup;
 			children = (
-				5C6EABC02FE3D9D600C9FF45 /* ShareLocalDir */,
-				5C6EABD02FE3DC9100C9FF45 /* ShareLocalDirTests */,
+				5C6EABC02FE3D9D600C9FF45 /* Apricot */,
+				5C6EABD02FE3DC9100C9FF45 /* ApricotTests */,
 				5C6EABBF2FE3D9D600C9FF45 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -71,8 +71,8 @@
 		5C6EABBF2FE3D9D600C9FF45 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5C6EABBE2FE3D9D600C9FF45 /* ShareLocalDir.app */,
-				5C6EABCF2FE3DC9000C9FF45 /* ShareLocalDirTests.xctest */,
+				5C6EABBE2FE3D9D600C9FF45 /* Apricot.app */,
+				5C6EABCF2FE3DC9000C9FF45 /* ApricotTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,9 +80,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5C6EABBD2FE3D9D600C9FF45 /* ShareLocalDir */ = {
+		5C6EABBD2FE3D9D600C9FF45 /* Apricot */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5C6EABC92FE3D9D700C9FF45 /* Build configuration list for PBXNativeTarget "ShareLocalDir" */;
+			buildConfigurationList = 5C6EABC92FE3D9D700C9FF45 /* Build configuration list for PBXNativeTarget "Apricot" */;
 			buildPhases = (
 				5C6EABBA2FE3D9D600C9FF45 /* Sources */,
 				5C6EABBB2FE3D9D600C9FF45 /* Frameworks */,
@@ -93,20 +93,20 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5C6EABC02FE3D9D600C9FF45 /* ShareLocalDir */,
+				5C6EABC02FE3D9D600C9FF45 /* Apricot */,
 			);
-			name = ShareLocalDir;
+			name = Apricot;
 			packageProductDependencies = (
 				5C6EABCE2FE3DC8F00C9FF45 /* NIO */,
 				5C6EABE32FE3EA9500C9FF45 /* NIOHTTP1 */,
 			);
-			productName = ShareLocalDir;
-			productReference = 5C6EABBE2FE3D9D600C9FF45 /* ShareLocalDir.app */;
+			productName = Apricot;
+			productReference = 5C6EABBE2FE3D9D600C9FF45 /* Apricot.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5C6EABD62FE3DC9700C9FF45 /* ShareLocalDirTests */ = {
+		5C6EABD62FE3DC9700C9FF45 /* ApricotTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5C6EABDA2FE3DC9B00C9FF45 /* Build configuration list for PBXNativeTarget "ShareLocalDirTests" */;
+			buildConfigurationList = 5C6EABDA2FE3DC9B00C9FF45 /* Build configuration list for PBXNativeTarget "ApricotTests" */;
 			buildPhases = (
 				5C6EABD12FE3DC9200C9FF45 /* Sources */,
 				5C6EABD22FE3DC9300C9FF45 /* Frameworks */,
@@ -118,13 +118,13 @@
 				5C6EABD52FE3DC9600C9FF45 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				5C6EABD02FE3DC9100C9FF45 /* ShareLocalDirTests */,
+				5C6EABD02FE3DC9100C9FF45 /* ApricotTests */,
 			);
-			name = ShareLocalDirTests;
+			name = ApricotTests;
 			packageProductDependencies = (
 			);
-			productName = ShareLocalDirTests;
-			productReference = 5C6EABCF2FE3DC9000C9FF45 /* ShareLocalDirTests.xctest */;
+			productName = ApricotTests;
+			productReference = 5C6EABCF2FE3DC9000C9FF45 /* ApricotTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -146,7 +146,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5C6EABB92FE3D9D500C9FF45 /* Build configuration list for PBXProject "ShareLocalDir" */;
+			buildConfigurationList = 5C6EABB92FE3D9D500C9FF45 /* Build configuration list for PBXProject "Apricot" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -163,8 +163,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5C6EABBD2FE3D9D600C9FF45 /* ShareLocalDir */,
-				5C6EABD62FE3DC9700C9FF45 /* ShareLocalDirTests */,
+				5C6EABBD2FE3D9D600C9FF45 /* Apricot */,
+				5C6EABD62FE3DC9700C9FF45 /* ApricotTests */,
 			);
 		};
 /* End PBXProject section */
@@ -206,7 +206,7 @@
 /* Begin PBXTargetDependency section */
 		5C6EABD52FE3DC9600C9FF45 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5C6EABBD2FE3D9D600C9FF45 /* ShareLocalDir */;
+			target = 5C6EABBD2FE3D9D600C9FF45 /* Apricot */;
 			targetProxy = 5C6EABD42FE3DC9500C9FF45 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -337,7 +337,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = ShareLocalDir/ShareLocalDir.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Apricot/Apricot.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -356,7 +356,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = cn.basecrypto.ShareLocalDir;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.basecrypto.Apricot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -373,7 +373,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = ShareLocalDir/ShareLocalDir.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Apricot/Apricot.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -392,7 +392,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = cn.basecrypto.ShareLocalDir;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.basecrypto.Apricot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -418,14 +418,14 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = cn.basecrypto.ShareLocalDirTests;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.basecrypto.ApricotTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ShareLocalDir.app/Contents/MacOS/ShareLocalDir";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Apricot.app/Contents/MacOS/Apricot";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -444,14 +444,14 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = cn.basecrypto.ShareLocalDirTests;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.basecrypto.ApricotTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ShareLocalDir.app/Contents/MacOS/ShareLocalDir";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Apricot.app/Contents/MacOS/Apricot";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
@@ -459,7 +459,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5C6EABB92FE3D9D500C9FF45 /* Build configuration list for PBXProject "ShareLocalDir" */ = {
+		5C6EABB92FE3D9D500C9FF45 /* Build configuration list for PBXProject "Apricot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5C6EABC72FE3D9D700C9FF45 /* Debug */,
@@ -468,7 +468,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5C6EABC92FE3D9D700C9FF45 /* Build configuration list for PBXNativeTarget "ShareLocalDir" */ = {
+		5C6EABC92FE3D9D700C9FF45 /* Build configuration list for PBXNativeTarget "Apricot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5C6EABCA2FE3D9D700C9FF45 /* Debug */,
@@ -477,7 +477,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5C6EABDA2FE3DC9B00C9FF45 /* Build configuration list for PBXNativeTarget "ShareLocalDirTests" */ = {
+		5C6EABDA2FE3DC9B00C9FF45 /* Build configuration list for PBXNativeTarget "ApricotTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5C6EABDB2FE3DC9C00C9FF45 /* Debug */,
