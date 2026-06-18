@@ -1261,6 +1261,8 @@ git commit -m "feat: add LocalNetwork IPv4 detection with tests"
 
 The SwiftNIO `ChannelInboundHandler`. Uses the helpers from Tasks 4–7. Verified by compiling; runtime behavior is checked in Task 16.
 
+> **Before this task:** `import NIOHTTP1` requires the `NIOHTTP1` product linked **separately** — the `NIO` umbrella product only contains the `NIO` target (which re-exports `NIOCore`/`NIOPosix`), not `NIOHTTP1`. Add a second `XCSwiftPackageProductDependency` (`productName = NIOHTTP1`, same package ref), a `PBXBuildFile` (`NIOHTTP1 in Frameworks`), a frameworks-phase entry, and a reference in the target's `packageProductDependencies` — mirroring the `NIO` entries from Task 1.
+
 **Files:**
 - Create: `ShareLocalDir/server/HTTPFileHandler.swift`
 
@@ -1375,7 +1377,7 @@ nonisolated final class HTTPFileHandler: ChannelInboundHandler, @unchecked Senda
             return
         }
 
-        let range = RangeParser.parse(head.headers.first(name: "Range"), total: total)
+        let range = RangeParser.parse(head.headers.first(name: "Range") ?? "", total: total)
         let start: Int64 = range?.start ?? 0
         let endInclusive: Int64 = range?.end ?? (total - 1)
         let length = Int(endInclusive - start + 1)
