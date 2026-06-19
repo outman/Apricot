@@ -25,7 +25,7 @@ Pick a folder, hit **Start Sharing**, and any device on the same network can bro
 
 ## Requirements
 
-- macOS 26.5+
+- macOS 14.6+
 - Xcode (built against SwiftNIO via Swift Package Manager)
 
 ## Build & Run
