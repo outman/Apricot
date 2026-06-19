@@ -94,4 +94,4 @@ Apricot/
 
 ## License
 
-TBD — pick one before publishing.
+[MIT](LICENSE)
